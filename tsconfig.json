@@ -5,7 +5,12 @@
 
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+
+        "lib": [
+            "es2015",
+            "es2016.array.include",
+        ]
     },
 
     "typeAcquisition": {
