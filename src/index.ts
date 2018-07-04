@@ -1,7 +1,7 @@
 const Containers: WeakMap<any, IContainer> = new WeakMap();
 
 export function inject<T extends Function>(dependency: T, ...args) {
-    return function(target: ObjectWithDI, property: string) {
+    return function(target: Object, property: string) {
         const injection = registerDependency(target.constructor, property, {
             type:        DependencyType.INSTANTIABLE,
             constructor: dependency,
@@ -12,7 +12,7 @@ export function inject<T extends Function>(dependency: T, ...args) {
     };
 }
 
-function injectInstatiable(target: ObjectWithDI, property: string, injection: IDependency, args: any[]) {
+function injectInstatiable(target: Object, property: string, injection: IDependency, args: any[]) {
     Object.defineProperty(target, property, {
         get() {
             const container: IContainer = this.$di;
@@ -86,5 +86,3 @@ interface IDependency {
 interface IContainer {
     dependencies: {[key: string]: IDependency};
 }
-
-type ObjectWithDI = Object & { $di?: IContainer };
