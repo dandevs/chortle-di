@@ -8,27 +8,29 @@ export function inject<T extends Function>(dependency: T, ...args) {
         });
 
         injectContainer(target);
-        injectInstatiable(target, property, injection, args);
+        inject.instantiable(target, property, injection, args);
     };
 }
 
-function injectInstatiable(target: Object, property: string, injection: IDependency, args: any[]) {
-    Object.defineProperty(target, property, {
-        get() {
-            const container: IContainer = this.$di;
-            let service: IDependency = container.dependencies[property];
+export namespace inject {
+    export function instantiable(target: Object, property: string, injection: IDependency, args: any[]) {
+        Object.defineProperty(target, property, {
+            get() {
+                const container: IContainer = this.$di;
+                let service: IDependency = container.dependencies[property];
 
-            if (!service) {
-                service = container.dependencies[property] = { ...Containers.get(target.constructor).dependencies[property] };
+                if (!service) {
+                    service = container.dependencies[property] = { ...Containers.get(target.constructor).dependencies[property] };
+                }
+
+                if (!service.instance) {
+                    service.instance = Reflect.construct(injection.constructor, args);
+                }
+
+                return service.instance;
             }
-
-            if (!service.instance) {
-                service.instance = Reflect.construct(injection.constructor, args);
-            }
-
-            return service.instance;
-        }
-    });
+        });
+    }
 }
 
 function registerDependency(target: Function, property: string, dependency: IDependency) {
