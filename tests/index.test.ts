@@ -11,10 +11,8 @@ class Baz {
 
 class Logger {}
 
-@injectable
-class Foo {
+@injectable class Foo {
     @inject(Bar) bar: Bar;
-    // @inject(Logger) log: Logger;
 
     constructor(public value?) { }
 }
@@ -27,6 +25,8 @@ it("Can inject dependencies", () => {
     expect(b.value).toBe("world");
 
     // Make sure it isn't instantiating new deps
+
+    expect(a.bar === b.bar).toBe(false);
     expect(a.bar.value).toBe(a.bar.value);
     expect(a.bar.value === b.bar.value).toBe(false);
 });
@@ -41,15 +41,18 @@ it.skip("#override", () => {
     expect(typeof post.bar.value).toBe("string");
 });
 
-it.only("Multi dependency injection", () => {
+it("Multi dependency injection", () => {
     class B {}
     class C {}
 
+    @injectable
     class A {
         @inject(B) b: B;
         @inject(C) c: C;
     }
 
     const a = new A(); //?
+
+    // @ts-ignore
     new A().$di; //?
 });

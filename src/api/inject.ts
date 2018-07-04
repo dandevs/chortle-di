@@ -9,7 +9,6 @@ export function inject<T extends Function>(dependency: T, ...args) {
             constructor: dependency,
         });
 
-        injectContainer(target);
         inject.instantiable(target, property, injection, args);
     };
 }

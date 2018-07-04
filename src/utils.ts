@@ -19,7 +19,7 @@ export function registerDependency(target: Function, property: string, dependenc
 }
 
 export function injectContainer(target: Object) {
-    if (Object.getOwnPropertyNames(target).includes("$di"))
+    if (target.hasOwnProperty("$di"))
         return false;
 
     Object.defineProperty(target, "$di", {
@@ -35,7 +35,11 @@ export function injectContainer(target: Object) {
 }
 
 export function copyContainer(original: IContainer) {
-    return <IContainer> {
-        dependencies: { ...original.dependencies }
-    };
+    const container: IContainer = createContainer();
+
+    for (let property in original.dependencies) {
+        container.dependencies[property] = { ...original.dependencies[property] };
+    }
+
+    return container;
 }
