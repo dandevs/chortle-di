@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "eventemitter3": "^3.1.0",
+    "mitt": "^1.1.3"
   },
   "devDependencies": {
     "jest": "^23.2.0",

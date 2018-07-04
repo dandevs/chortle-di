@@ -31,27 +31,25 @@ it("Can inject dependencies", () => {
     expect(a.bar.value === b.bar.value).toBe(false);
 });
 
-it.skip("#override", () => {
-    const pre = new Foo("pre");
-    expect(typeof pre.bar.value).toBe("number");
-
+it.only("#override", () => {
     override(Foo, "bar", Baz);
-    const post = new Foo("post");
+    // const pre = new Foo("pre");
+    // expect(typeof pre.bar.value).toBe("number");
 
-    expect(typeof post.bar.value).toBe("string");
+    // override(Foo, "bar", Baz);
+    // const post = new Foo("post");
+
+    // expect(typeof post.bar.value).toBe("string");
 });
 
 it("Multi dependency injection", () => {
     class B {}
     class C {}
 
-    @injectable
-    class A {
+    @injectable class A {
         @inject(B) b: B;
         @inject(C) c: C;
     }
-
-    const a = new A(); //?
 
     // @ts-ignore
     new A().$di; //?

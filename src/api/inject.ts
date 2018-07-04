@@ -9,6 +9,7 @@ export function inject<T extends Function>(dependency: T, ...args) {
             constructor: dependency,
         });
 
+        injectContainer(target);
         inject.instantiable(target, property, injection, args);
     };
 }
@@ -18,11 +19,7 @@ export namespace inject {
         Object.defineProperty(target, property, {
             get() {
                 const container: IContainer = this.$di;
-                let service: IDependency = container.dependencies[property];
-
-                if (!service) {
-                    service = container.dependencies[property] = { ...Containers.get(target.constructor).dependencies[property] };
-                }
+                let   service: IDependency  = container.dependencies[property];
 
                 if (!service.instance) {
                     service.instance = Reflect.construct(injection.constructor, args);
@@ -31,5 +28,9 @@ export namespace inject {
                 return service.instance;
             }
         });
+    }
+
+    export function singleton(target: Object) {
+
     }
 }

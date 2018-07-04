@@ -1,5 +1,8 @@
+import mitt from "mitt";
 import { IContainer, IDependency } from "./interfaces";
 import { Containers } from "./maps";
+
+const Events = new mitt();
 
 export function createContainer(defaults: IContainer = <any>{}): IContainer {
     return <IContainer> {

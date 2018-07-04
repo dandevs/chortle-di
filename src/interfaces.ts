@@ -14,3 +14,7 @@ export enum DependencyType {
     SINGLETON,
     VALUE
 }
+
+export enum EventType {
+    REGISTER_DEP
+}
