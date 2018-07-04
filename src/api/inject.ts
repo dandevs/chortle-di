@@ -1,6 +1,6 @@
-import { Containers } from "./maps";
-import { DependencyType, IContainer, IDependency } from "./interfaces";
-import { registerDependency, createContainer } from "./utils";
+import { Containers } from "../maps";
+import { DependencyType, IContainer, IDependency } from "../interfaces";
+import { registerDependency, injectContainer } from "../utils";
 
 export function inject<T extends Function>(dependency: T, ...args) {
     return function(target: Object, property: string) {
@@ -33,15 +33,4 @@ export namespace inject {
             }
         });
     }
-}
-
-function injectContainer(target: Object) {
-    Object.defineProperty(target, "$di", {
-        get() {
-            if (!Containers.has(this))
-                Containers.set(this, createContainer());
-
-            return Containers.get(this);
-        }
-    });
 }

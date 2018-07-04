@@ -17,3 +17,25 @@ export function registerDependency(target: Function, property: string, dependenc
 
     return dependency;
 }
+
+export function injectContainer(target: Object) {
+    if (Object.getOwnPropertyNames(target).includes("$di"))
+        return false;
+
+    Object.defineProperty(target, "$di", {
+        get() {
+            if (!Containers.has(this))
+                Containers.set(this, copyContainer(Containers.get(target.constructor)));
+
+            return Containers.get(this);
+        }
+    });
+
+    return true;
+}
+
+export function copyContainer(original: IContainer) {
+    return <IContainer> {
+        dependencies: { ...original.dependencies }
+    };
+}

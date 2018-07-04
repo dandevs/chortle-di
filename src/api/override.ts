@@ -1,4 +1,4 @@
-import { Containers } from "./maps";
+import { Containers } from "../maps";
 
 export function override(target: Function, property: string, newDep: Function) {
     const container = Containers.get(target);
