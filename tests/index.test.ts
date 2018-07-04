@@ -5,6 +5,10 @@ class Bar {
     value = i++;
 }
 
+class Baz {
+    value = "bazinga...";
+}
+
 class Foo {
     @inject(Bar) bar: Bar;
 
@@ -24,6 +28,7 @@ describe("Chortle", () => {
     });
 
     it("#override", () => {
-        override.singleton;
+        override(Foo, "bar", Baz);
+        const post = new Foo("nil");
     });
 });

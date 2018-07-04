@@ -48,8 +48,9 @@ function createContainer(defaults: IContainer = <any>{}): IContainer {
     };
 }
 
-export function override(target: Function) {
-
+export function override(target: Function, property: string, newDep: Function) {
+    const container = Containers.get(target);
+    container.dependencies[property].constructor = newDep;
 }
 
 export namespace override {
