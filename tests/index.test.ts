@@ -54,7 +54,7 @@ describe("#override()", () => {
         expect(lazy.b instanceof C).toBe(false);
     });
 
-    it.only("overrides dependency", () => {
+    it("overrides dependency", () => {
         class B {}
         class C {}
 
@@ -68,4 +68,5 @@ describe("#override()", () => {
         override(B, C);
         expect(new A().b instanceof C).toBe(true);
         expect(lazy.b instanceof B).toBe(true);
+    });
 });
