@@ -46,7 +46,10 @@ test("#override()", () => {
         @inject.singleton(B) b: B;
     }
 
-    expect(new A().b instanceof B).toBe(true);
+    const lazy = new A();
+
     override(A, "b", C);
     expect(new A().b instanceof C).toBe(true);
+
+    expect(lazy.b instanceof C).toBe(false);
 });
