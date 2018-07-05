@@ -8,7 +8,7 @@ Currently in prototyping phase
 
 ### Example
 ```ts
-    import { inject, injectable } from "chort-di"
+    import { inject, injectable } from "chortle-di"
 
     class Foo {
         hello() {
