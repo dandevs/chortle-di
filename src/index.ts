@@ -59,14 +59,14 @@ function fabricateDependency(dependency: IDependency) {
         if (!Singletons.has(dependency.constructor))
             Singletons.set(dependency.constructor, Reflect.construct(dependency.constructor, dependency.args));
 
-        return Singletons.get(dependency);
+        return Singletons.get(dependency.constructor);
     }
 }
 
 // ----------------------------------------------------------------
 
 export function injectable(target: Function) {
-    if (!Object.getOwnPropertyNames(target.prototype).includes("$di")) {
+    if (Object.getOwnPropertyNames(target.prototype).indexOf("$di") === -1) {
         Object.defineProperty(target.prototype, "$di", {
             get() {
                 if (!Containers.has(this))
@@ -77,13 +77,23 @@ export function injectable(target: Function) {
         });
     }
 
-    return new Proxy<any>(target, {
+    const proxy = new Proxy<any>(target, {
         construct(target: Function, args) {
             const instance = Reflect.construct(target, args);
             instance.$di;
             return instance;
         }
     });
+
+    Injected.set(proxy, Injected.get(target));
+    return proxy;
+}
+
+// ----------------------------------------------------------------
+
+export function override(target: Function, property: string, newDep: Function, ...depArgs: any[]) {
+    const container = Injected.get(target); //?
+    container.dependencies[property].constructor = newDep;
 }
 
 // ----------------------------------------------------------------
@@ -104,3 +114,5 @@ function copyContainer(original: IContainer) {
 
     return container;
 }
+
+export default { inject, injectable, override };

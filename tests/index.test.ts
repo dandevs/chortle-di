@@ -1,4 +1,4 @@
-import { inject, injectable } from "../src";
+import { inject, injectable, override } from "../src";
 
 test("Can inject", () => {
     class B { value = Math.random(); }
@@ -34,5 +34,19 @@ test("#inject.singleton()", () => {
     const i0 = new B();
     const i1 = new B();
 
+    expect(i0.a instanceof A).toBe(true);
     expect(i0.a === i1.a).toBe(true);
+});
+
+test("#override()", () => {
+    class B {}
+    class C {}
+
+    @injectable class A {
+        @inject.singleton(B) b: B;
+    }
+
+    expect(new A().b instanceof B).toBe(true);
+    override(A, "b", C);
+    expect(new A().b instanceof C).toBe(true);
 });
