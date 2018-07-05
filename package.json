@@ -1,6 +1,14 @@
 {
   "name": "chortle-di",
-  "version": "0.0.3",
+  "version": "0.0.4",
+  "license": "ISC",
+
+  "keywords": [
+    "dependency",
+    "injection",
+    "ioc"
+  ],
+
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc --outDir dist",
