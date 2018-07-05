@@ -1,6 +1,13 @@
 export interface IContainer {
     dependencies: {[key: string]: IDependency};
+    overrides?: {[key: string]: IOverride};
+    overridenDeps?: Map<Function, IOverride>;
     host: Function;
+}
+
+export interface IOverride {
+    constructor?: any;
+    args?: any[];
 }
 
 export interface IDependency {

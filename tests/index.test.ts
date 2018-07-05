@@ -38,18 +38,34 @@ test("#inject.singleton()", () => {
     expect(i0.a === i1.a).toBe(true);
 });
 
-test("#override()", () => {
-    class B {}
-    class C {}
+describe("#override()", () => {
+    it("overrides property in class", () => {
+        class B {}
+        class C {}
 
-    @injectable class A {
-        @inject.singleton(B) b: B;
-    }
+        @injectable class A {
+            @inject.singleton(B) b: B;
+        }
 
-    const lazy = new A();
+        const lazy = new A();
 
-    override(A, "b", C);
-    expect(new A().b instanceof C).toBe(true);
+        override(A, "b", C);
+        expect(new A().b instanceof C).toBe(true);
+        expect(lazy.b instanceof C).toBe(false);
+    });
 
-    expect(lazy.b instanceof C).toBe(false);
+    it.only("overrides dependency", () => {
+        class B {}
+        class C {}
+
+        @injectable class A {
+            @inject(B) b: B;
+        }
+
+        const lazy = new A();
+
+        expect(new A().b instanceof B).toBe(true);
+        override(B, C);
+        expect(new A().b instanceof C).toBe(true);
+        expect(lazy.b instanceof B).toBe(true);
 });
