@@ -1,30 +1,28 @@
-### Chortle
-Currently in prototyping phase
+# Chortle
 
-#
 ### Features
 * Lazily loaded
 * Simple
 
 ### Example
 ```ts
-    import { inject, injectable } from "chortle-di"
+import { inject, injectable } from "chortle-di"
 
-    class Foo {
-        hello() {
-            return "world"
-        }
+class Foo {
+    hello() {
+        return "world"
     }
+}
 
-    @injectable class Bar {
-        @inject(Foo) foo: Foo
+@injectable class Bar {
+    @inject(Foo) foo: Foo
 
-        constructor(baz?: any) {
-            console.log(`fizz${baz} from ${this.foo.hello()}`)
-        }
+    constructor(baz?: any) {
+        console.log(`fizz${baz} from ${this.foo.hello()}`)
     }
+}
 
-    const bar = new Bar("buzz")
+const bar = new Bar("buzz")
 ```
 
 # API
