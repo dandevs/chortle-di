@@ -1,6 +1,10 @@
 {
+  "name": "chortle-di",
+  "version": "0.0.1",
+  "main": "dist/index.js",
   "scripts": {
-    "build": "tsc src/index.ts --outDir dist"
+    "build": "tsc --outDir dist",
+    "prepublish": "yarn build"
   },
   "dependencies": {},
   "devDependencies": {

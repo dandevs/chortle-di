@@ -7,11 +7,13 @@
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
 
-        "lib": [
-            "es2015",
-            "es2016.array.include",
-        ]
+        "declaration": true,
     },
+
+    "exclude": [
+        "node_modules",
+        "tests"
+    ],
 
     "typeAcquisition": {
         "enable": true
