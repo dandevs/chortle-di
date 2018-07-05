@@ -5,8 +5,15 @@
 
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+
+        "declaration": true,
     },
+
+    "exclude": [
+        "node_modules",
+        "tests"
+    ],
 
     "typeAcquisition": {
         "enable": true

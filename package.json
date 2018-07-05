@@ -1,8 +1,12 @@
 {
-  "dependencies": {
-    "eventemitter3": "^3.1.0",
-    "mitt": "^1.1.3"
+  "name": "chortle-di",
+  "version": "0.0.2",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc --outDir dist",
+    "prepublishOnly": "yarn build"
   },
+  "dependencies": {},
   "devDependencies": {
     "jest": "^23.2.0",
     "typescript": "^2.9.2"

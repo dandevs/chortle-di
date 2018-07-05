@@ -1,56 +1,52 @@
-import { inject, override, injectable } from "../src";
-let i = 0;
+import { inject, injectable, override } from "../src";
 
-class Bar {
-    value = i++;
-}
+test("Can inject", () => {
+    class B { value = Math.random(); }
 
-class Baz {
-    value = "bazinga...";
-}
+    class C {
+        constructor(public value?: any) {}
+    }
 
-class Logger {}
+    @injectable class A {
+        @inject(B) b: B;
+        @inject(C, "foobar") c: C;
 
-@injectable class Foo {
-    @inject(Bar) bar: Bar;
+        constructor(public value?: string) {}
+    }
 
-    constructor(public value?) { }
-}
+    const a0 = new A("hello");
+    const a1 = new A("world");
 
-it("Can inject dependencies", () => {
-    const a = new Foo("hello"),
-          b = new Foo("world");
+    expect(a0.b === a1.b).toBe(false);
+    expect(a0.value).toBe("hello");
+    expect(a1.value).toBe("world");
 
-    expect(a.value).toBe("hello");
-    expect(b.value).toBe("world");
-
-    // Make sure it isn't instantiating new deps
-
-    expect(a.bar === b.bar).toBe(false);
-    expect(a.bar.value).toBe(a.bar.value);
-    expect(a.bar.value === b.bar.value).toBe(false);
+    expect(a0.c.value).toBe("foobar");
 });
 
-it.only("#override", () => {
-    override(Foo, "bar", Baz);
-    // const pre = new Foo("pre");
-    // expect(typeof pre.bar.value).toBe("number");
+test("#inject.singleton()", () => {
+    class A {}
 
-    // override(Foo, "bar", Baz);
-    // const post = new Foo("post");
+    @injectable class B {
+        @inject.singleton(A) a: A;
+    }
 
-    // expect(typeof post.bar.value).toBe("string");
+    const i0 = new B();
+    const i1 = new B();
+
+    expect(i0.a instanceof A).toBe(true);
+    expect(i0.a === i1.a).toBe(true);
 });
 
-it("Multi dependency injection", () => {
+test("#override()", () => {
     class B {}
     class C {}
 
     @injectable class A {
-        @inject(B) b: B;
-        @inject(C) c: C;
+        @inject.singleton(B) b: B;
     }
 
-    // @ts-ignore
-    new A().$di; //?
+    expect(new A().b instanceof B).toBe(true);
+    override(A, "b", C);
+    expect(new A().b instanceof C).toBe(true);
 });

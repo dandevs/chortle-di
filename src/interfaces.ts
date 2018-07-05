@@ -1,20 +1,20 @@
-export interface IDependency {
-    constructor?: any;
-    instance?:    any;
-    args?:        any[];
-    type:         DependencyType;
-}
-
 export interface IContainer {
     dependencies: {[key: string]: IDependency};
+    host: Function;
+}
+
+export interface IDependency {
+    type:         DependencyType;
+    instance?:    any;
+    constructor?: Function;
+    args?:        any[];
+}
+
+export enum EventType {
+    DEP_REGISTERED = "0",
 }
 
 export enum DependencyType {
     INSTANTIABLE,
     SINGLETON,
-    VALUE
-}
-
-export enum EventType {
-    REGISTER_DEP
 }
