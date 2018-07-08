@@ -6,14 +6,15 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
-
         "declaration": true,
-    },
 
-    "exclude": [
-        "node_modules",
-        "tests"
-    ],
+        "lib": [
+            "es2016.array.include",
+            "es6",
+            "es5",
+            "esnext"
+        ],
+    },
 
     "typeAcquisition": {
         "enable": true

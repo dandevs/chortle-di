@@ -1,72 +1,73 @@
-import { inject, injectable, override } from "../src";
+import { inject, injectable, replaceService } from "../src";
 
-test("Can inject", () => {
-    class B { value = Math.random(); }
-
-    class C {
-        constructor(public value?: any) {}
-    }
-
-    @injectable class A {
-        @inject(B) b: B;
-        @inject(C, "foobar") c: C;
-
-        constructor(public value?: string) {}
-    }
-
-    const a0 = new A("hello");
-    const a1 = new A("world");
-
-    expect(a0.b === a1.b).toBe(false);
-    expect(a0.value).toBe("hello");
-    expect(a1.value).toBe("world");
-
-    expect(a0.c.value).toBe("foobar");
-});
-
-test("#inject.singleton()", () => {
-    class A {}
-
-    @injectable class B {
-        @inject.singleton(A) a: A;
-    }
-
-    const i0 = new B();
-    const i1 = new B();
-
-    expect(i0.a instanceof A).toBe(true);
-    expect(i0.a === i1.a).toBe(true);
-});
-
-describe("#override()", () => {
-    it("overrides property in class", () => {
-        class B {}
-        class C {}
-
-        @injectable class A {
-            @inject.singleton(B) b: B;
+describe("#injectable()", () => {
+    it("Creates instances", () => {
+        @injectable class C {
+            constructor(public value: any) { }
         }
 
-        const lazy = new A();
-
-        override(A, "b", C);
-        expect(new A().b instanceof C).toBe(true);
-        expect(lazy.b instanceof C).toBe(false);
-    });
-
-    it("overrides dependency", () => {
-        class B {}
-        class C {}
+        @injectable class B {
+            @inject(C, "foo") c: C;
+        }
 
         @injectable class A {
             @inject(B) b: B;
         }
 
-        const lazy = new A();
+        const a = new A();
 
-        expect(new A().b instanceof B).toBe(true);
-        override(B, C);
-        expect(new A().b instanceof C).toBe(true);
-        expect(lazy.b instanceof B).toBe(true);
+        expect(a.b instanceof B).toBe(true);
+        expect(a.b.c instanceof C).toBe(true);
+        expect(a.b.c.value).toBe("foo");
+    });
+
+    it("#singleton()", () => {
+        class B {
+            public value: number;
+
+            constructor() {
+                this.value = Math.random();
+            }
+        }
+
+        @injectable class A {
+            @inject.singleton(B) b: B;
+        }
+
+        const a0 = new A();
+        const a1 = new A();
+
+        expect(a0.b === a1.b).toBe(true);
+    });
+});
+
+describe("#replaceService()", () => {
+    class C { }
+    class B { }
+
+    it("type: INSTANTIABLE", () => {
+        @injectable class A {
+            @inject(B) b: B;
+        }
+
+        const a0 = new A();
+        replaceService(B, C);
+        const a1 = new A();
+
+        expect(a0.b instanceof B).toBe(true);
+        expect(a1.b instanceof C).toBe(true);
+    });
+
+    it("type: SINGLETON", () => {
+        @injectable class A {
+            @inject.singleton(B) b: B;
+        }
+
+        const a0 = new A();
+        replaceService(B, C);
+        const a1 = new A();
+
+        expect(a0.b instanceof B).toBe(true);
+        expect(a1.b instanceof C).toBe(true);
     });
 });
