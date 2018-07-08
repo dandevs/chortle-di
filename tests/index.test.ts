@@ -1,4 +1,3 @@
-import cloneDeep from "lodash.clonedeep";
 import { inject, injectable, replaceService } from "../src";
 
 describe("#injectable()", () => {
