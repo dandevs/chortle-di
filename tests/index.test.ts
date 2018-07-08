@@ -41,7 +41,7 @@ describe("#injectable()", () => {
     });
 });
 
-describe.only("#replaceService()", () => {
+describe("#replaceService()", () => {
     class C { }
     class B { }
 
