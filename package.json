@@ -2,20 +2,22 @@
   "name": "chortle-di",
   "version": "0.0.4",
   "license": "ISC",
-
   "keywords": [
     "dependency",
     "injection",
     "ioc"
   ],
-
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc --outDir dist",
+    "build": "tsc --outDir dist --project tsconfig.prod.json",
     "prepublishOnly": "yarn build"
   },
   "devDependencies": {
+    "@types/jest": "^23.1.4",
     "jest": "^23.2.0",
     "typescript": "^2.9.2"
+  },
+  "dependencies": {
+    "lodash.clonedeepwith": "^4.5.0"
   }
 }
