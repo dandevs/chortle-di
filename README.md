@@ -36,37 +36,16 @@ Decorator that makes a class injectable and ensures it works properly
 
 ## @inject.singleton(target, ...args)
 
-## override(target, property, newDependency)
-New instances of targets property will use the new dependency
-```js
-class B {}
-class C {}
-
-@injectable class A {
-    @inject.singleton(B) b: B;
-}
-
-const lazy = new A();
-override(A, "b", C);
-
-expect(new A().b instanceof C).toBe(true);
-expect(lazy.b instanceof C).toBe(false);
-```
-
-## override(dependency, newDependency)
+## replaceService(dependency, newDependency)
 Overrides the dependency as to point to a different one
-```js
-class B {}
-class C {}
-
+```ts
 @injectable class A {
     @inject(B) b: B;
 }
 
-const lazy = new A();
+const a0 = new A();
+replaceService(B, C);
+const a1 = new A();
 
-expect(new A().b instanceof B).toBe(true);
-override(B, C);
-expect(new A().b instanceof C).toBe(true);
-expect(lazy.b instanceof B).toBe(true);
+expect(a0.b instanceof B).toBe(true);
 ```
